@@ -1,0 +1,66 @@
+ion back to the client.
+
+Client code:
+
+<html>
+
+<head></head>
+
+<body>
+    <script src="wsmanager.js"></script>
+    <script type="text/javascript">
+
+
+
+        window.onload = function () {
+            console.log("onload");
+            wsmanager.init("ws://127.0.0.1:1234/ws");
+
+            wsmanager.setConnectionStateChangedCallback(function (state) {
+                console.log("new state: " + state);
+                if (state == 'online') {
+
+                }
+            });
+
+        }
+
+
+
+        /*       sock.onmessage = function (e) {
+                   t = document.getElementById("out");
+                   t.innerHTML += "message received: " + e.data + "<br>";
+                   console.log("message received: " + e.data + "<br>");
+               }
+           };*/
+
+        function send() {
+            console.log("send");
+            wsmanager.tx("testmethod", { 'one': 1, 'two': 2 }, 5000, function (r) { console.log("answer on testmethod: ", r); });
+            /*let dat = {
+                'jsonrpc': "2.0",
+                'params': { 'one': 1, 'two': 2 },
+                'id': 1
+            };
+            wsmanager._stopHeartbeatTimer();
+            clearInterval(wsmanager._sendWorkerTimer);
+            wsmanager._sock.onclose = function () {
+                console.log("disconnect");
+            };
+            wsmanager._sock.onmessage = function (e) {
+                console.log(e.data);
+            };
+            wsmanager._sock.send(JSON.stringify(dat));*/
+
+        }
+    </script>
+    <label id="out">WebSocket Echo Test:<br></label>
+    <form>
+        <p>
+            Message: <input id="message" type="text" value="Hello, world!">
+        </p>
+    </form>
+    <button onclick="send();">Send Message</button>
+</body>
+
+</html>
